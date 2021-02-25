@@ -17,10 +17,12 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <boost/atomic/detail/bitwise_cast.hpp>
 #include <iostream>
 
 using namespace boost::multiprecision;
 using namespace boost::multiprecision::literals;
+using namespace boost::atomics::detail;
 
 constexpr uint512_t fnv_prime = 0x00000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000157_cppui512;
 
@@ -52,7 +54,7 @@ fnv0(PyObject *self, PyObject *args) {
 
   char hexdigest[64 * 2];
   for (unsigned int i = 0; i < 128; i++) {
-    hexdigest[127 - i] = nibble2hex(static_cast<unsigned char>(hash) & 0xf);
+    hexdigest[127 - i] = nibble2hex(bitwise_cast<unsigned char>(hash) & 0xf);
     hash >>= 4;
   }
 
@@ -79,7 +81,7 @@ fnv1(PyObject *self, PyObject *args) {
 
   char hexdigest[64 * 2];
   for (unsigned int i = 0; i < 128; i++) {
-    hexdigest[127 - i] = nibble2hex(static_cast<unsigned char>(hash) & 0xf);
+    hexdigest[127 - i] = nibble2hex(bitwise_cast<unsigned char>(hash) & 0xf);
     hash >>= 4;
   }
 
@@ -106,7 +108,7 @@ fnv1a(PyObject *self, PyObject *args) {
 
   char hexdigest[64 * 2];
   for (unsigned int i = 0; i < 128; i++) {
-    hexdigest[127 - i] = nibble2hex(static_cast<unsigned char>(hash) & 0xf);
+    hexdigest[127 - i] = nibble2hex(bitwise_cast<unsigned char>(hash) & 0xf);
     hash >>= 4;
   }
 
